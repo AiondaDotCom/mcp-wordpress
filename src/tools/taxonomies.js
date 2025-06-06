@@ -346,7 +346,7 @@ export const deleteTag = {
 
 export async function handleListCategories(apiClient, args) {
   try {
-    debug('Listing categories with args:', args);
+    debug.log('Listing categories with args:', args);
     
     const params = new URLSearchParams();
     
@@ -387,14 +387,14 @@ export async function handleListCategories(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error listing categories:', error);
+    debug.log('Error listing categories:', error);
     throw new Error(`Failed to list categories: ${error.message}`);
   }
 }
 
 export async function handleGetCategory(apiClient, args) {
   try {
-    debug('Getting category with ID:', args.id);
+    debug.log('Getting category with ID:', args.id);
     
     const category = await apiClient.getCategory(args.id, args.context);
     
@@ -412,14 +412,14 @@ export async function handleGetCategory(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting category:', error);
+    debug.log('Error getting category:', error);
     throw new Error(`Failed to get category: ${error.message}`);
   }
 }
 
 export async function handleCreateCategory(apiClient, args) {
   try {
-    debug('Creating category with name:', args.name);
+    debug.log('Creating category with name:', args.name);
     
     const categoryData = {
       name: args.name
@@ -445,14 +445,14 @@ export async function handleCreateCategory(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error creating category:', error);
+    debug.log('Error creating category:', error);
     throw new Error(`Failed to create category: ${error.message}`);
   }
 }
 
 export async function handleUpdateCategory(apiClient, args) {
   try {
-    debug('Updating category with ID:', args.id);
+    debug.log('Updating category with ID:', args.id);
     
     const { id, ...updateData } = args;
     const category = await apiClient.updateCategory(id, updateData);
@@ -468,14 +468,14 @@ export async function handleUpdateCategory(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error updating category:', error);
+    debug.log('Error updating category:', error);
     throw new Error(`Failed to update category: ${error.message}`);
   }
 }
 
 export async function handleDeleteCategory(apiClient, args) {
   try {
-    debug('Deleting category with ID:', args.id);
+    debug.log('Deleting category with ID:', args.id);
     
     if (!args.force) {
       throw new Error('Categories cannot be trashed, force parameter must be true');
@@ -491,14 +491,14 @@ export async function handleDeleteCategory(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error deleting category:', error);
+    debug.log('Error deleting category:', error);
     throw new Error(`Failed to delete category: ${error.message}`);
   }
 }
 
 export async function handleListTags(apiClient, args) {
   try {
-    debug('Listing tags with args:', args);
+    debug.log('Listing tags with args:', args);
     
     const params = new URLSearchParams();
     
@@ -537,14 +537,14 @@ export async function handleListTags(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error listing tags:', error);
+    debug.log('Error listing tags:', error);
     throw new Error(`Failed to list tags: ${error.message}`);
   }
 }
 
 export async function handleGetTag(apiClient, args) {
   try {
-    debug('Getting tag with ID:', args.id);
+    debug.log('Getting tag with ID:', args.id);
     
     const tag = await apiClient.getTag(args.id, args.context);
     
@@ -561,14 +561,14 @@ export async function handleGetTag(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting tag:', error);
+    debug.log('Error getting tag:', error);
     throw new Error(`Failed to get tag: ${error.message}`);
   }
 }
 
 export async function handleCreateTag(apiClient, args) {
   try {
-    debug('Creating tag with name:', args.name);
+    debug.log('Creating tag with name:', args.name);
     
     const tagData = {
       name: args.name
@@ -592,14 +592,14 @@ export async function handleCreateTag(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error creating tag:', error);
+    debug.log('Error creating tag:', error);
     throw new Error(`Failed to create tag: ${error.message}`);
   }
 }
 
 export async function handleUpdateTag(apiClient, args) {
   try {
-    debug('Updating tag with ID:', args.id);
+    debug.log('Updating tag with ID:', args.id);
     
     const { id, ...updateData } = args;
     const tag = await apiClient.updateTag(id, updateData);
@@ -614,14 +614,14 @@ export async function handleUpdateTag(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error updating tag:', error);
+    debug.log('Error updating tag:', error);
     throw new Error(`Failed to update tag: ${error.message}`);
   }
 }
 
 export async function handleDeleteTag(apiClient, args) {
   try {
-    debug('Deleting tag with ID:', args.id);
+    debug.log('Deleting tag with ID:', args.id);
     
     if (!args.force) {
       throw new Error('Tags cannot be trashed, force parameter must be true');
@@ -637,7 +637,7 @@ export async function handleDeleteTag(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error deleting tag:', error);
+    debug.log('Error deleting tag:', error);
     throw new Error(`Failed to delete tag: ${error.message}`);
   }
 }

@@ -1,387 +1,468 @@
-# MCP WordPress Server
+# 🔌 MCP WordPress Server
 
-A comprehensive Model Context Protocol (MCP) server that provides complete WordPress CMS management capabilities through the WordPress REST API v2. This server includes **54 WordPress management tools** across 8 categories, interactive setup wizard, status monitoring, and comprehensive testing framework.
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
+[![WordPress](https://img.shields.io/badge/WordPress-5.6%2B-blue.svg)](https://wordpress.org/)
+[![MCP](https://img.shields.io/badge/MCP-Compatible-purple.svg)](https://modelcontextprotocol.io/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## Overview
+A powerful **Model Context Protocol (MCP) server** that provides comprehensive WordPress management capabilities through natural language interactions. Manage your WordPress site using AI assistants like Claude, ChatGPT, or any MCP-compatible client.
 
-This MCP server enables complete WordPress site management through structured tools and functions, utilizing the WordPress REST API v2 for all operations. Control your WordPress site content, users, media, and settings through natural language interactions with Claude or other MCP-compatible clients.
+## ✨ Features
 
-## WordPress REST API Integration
+### 📝 **Content Management**
+- **Posts & Pages**: Full CRUD operations with rich content support
+- **Media Library**: Upload, organize, and manage files with metadata
+- **Revisions**: Track and manage content history
+- **Bulk Operations**: Efficient batch processing
 
-**WordPress has a powerful REST API!** The WordPress REST API v2 provides complete access to:
+### 👥 **User & Access Management**
+- **User Management**: Create, update, and manage WordPress users
+- **Role-based Access**: Handle permissions and capabilities
+- **Authentication**: Secure access with Application Passwords
+- **Current User Info**: Get authenticated user details
 
-- **Posts** (`/wp/v2/posts`) - Create, edit, delete blog posts
-- **Pages** (`/wp/v2/pages`) - Manage static pages  
-- **Media** (`/wp/v2/media`) - Upload and manage images, files
-- **Users** (`/wp/v2/users`) - User management
-- **Categories/Tags** (`/wp/v2/categories`, `/wp/v2/tags`) - Taxonomies
-- **Comments** (`/wp/v2/comments`) - Comment moderation
-- **Settings** (`/wp/v2/settings`) - Site settings
-- **Themes** (`/wp/v2/themes`) - Theme management
-- **Plugins** (`/wp/v2/plugins`) - Plugin management
-- **Menus** - Navigation management
-- **Widgets** - Sidebar widgets
-- **Custom Post Types** - Custom content types
+### 💬 **Community Features**
+- **Comments**: Moderate, approve, and manage user comments
+- **Spam Protection**: Built-in spam detection and management
+- **Comment Threading**: Handle nested comment structures
 
-## Architecture
+### 🏷️ **Content Organization**
+- **Categories**: Hierarchical content organization
+- **Tags**: Flexible content tagging system
+- **Custom Taxonomies**: Support for custom classification systems
 
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   MCP Client    │───▶│  MCP-WordPress   │───▶│  WordPress Site │
-│   (Claude/LLM)  │    │     Server       │    │   (REST API)    │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-```
+### ⚙️ **Site Administration**
+- **Site Settings**: Configure WordPress core settings
+- **Application Passwords**: Manage API access credentials
+- **Site Statistics**: Get comprehensive site metrics
+- **Search**: Full-text search across all content types
 
-## Features
+### 🔐 **Security & Authentication**
+- **Multiple Auth Methods**: Application Passwords, OAuth, JWT
+- **SSL Support**: Secure connections with certificate validation
+- **Rate Limiting**: Built-in request throttling
+- **Error Handling**: Comprehensive error management
 
-### Content Management
-- Create, edit, and delete blog posts and pages
-- Manage categories and tags
-- Upload and organize media files
-- Schedule posts for future publication
-- Bulk content operations
-
-### User Management
-- Create and manage user accounts
-- Update user profiles and roles
-- Handle user permissions
-
-### Site Administration
-- Manage site settings
-- Theme and plugin management
-- Navigation menu control
-- Comment moderation
-
-### Advanced Features
-- Site-wide search capabilities
-- Content import/export
-- Analytics integration (when available)
-- SEO management tools
-
-## Quick Start
-
-### 1. Interactive Setup Wizard
-Run the interactive setup wizard to configure your WordPress connection:
-
-```bash
-npm run setup
-```
-
-The setup wizard will:
-- Guide you through WordPress site configuration
-- Help you choose the best authentication method
-- Test your WordPress connection
-- Generate Claude Desktop configuration
-- Provide step-by-step integration instructions
-
-### 2. Check Status
-Verify your configuration and WordPress connectivity:
-
-```bash
-npm run status
-```
-
-### 3. Run Integration Tests
-Test all MCP tools and WordPress connectivity:
-
-```bash
-npm run test:mcp
-```
-
-## Installation
+## 🚀 Quick Start
 
 ### Prerequisites
-- WordPress 5.0+ with REST API enabled
-- Node.js 18+
-- WordPress site with appropriate user permissions
+
+- **Node.js 18+**
+- **WordPress 5.6+** with REST API enabled
+- **Application Passwords** enabled (WordPress 5.6+)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/mcp-wordpress.git
+cd mcp-wordpress
+
+# Install dependencies
+npm install
+
+# Copy environment template
+cp .env.example .env
+
+# Configure your WordPress credentials (see Configuration section)
+nano .env
+
+# Test the connection
+npm run test:connection
+```
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+# WordPress Site Configuration
+WORDPRESS_URL=https://your-site.com
+WORDPRESS_USERNAME=your_admin_username
+WORDPRESS_APP_PASSWORD=your_application_password
+
+# Security Settings
+NODE_TLS_REJECT_UNAUTHORIZED=0  # Set to 1 for production with valid SSL
+
+# Development Settings
+DEBUG=true                      # Enable debug logging
+WORDPRESS_TIMEOUT=30000         # Request timeout in milliseconds
+WORDPRESS_MAX_RETRIES=3         # Maximum retry attempts
+```
 
 ### WordPress Setup
-1. Ensure REST API is enabled (default in WordPress 5.0+)
-2. Create Application Password for your user account
-3. Configure user permissions appropriately
-4. Optional: Configure CORS headers if needed
 
-### Install Dependencies
+1. **Enable Application Passwords**:
+   - Go to **Users → Your Profile** in WordPress admin
+   - Scroll to **"Application Passwords"** section
+   - Enter name: `MCP WordPress Server`
+   - Click **"Add New Application Password"**
+   - **Copy the generated password** (you won't see it again!)
+
+2. **Verify REST API**:
+   - Visit: `https://your-site.com/wp-json/wp/v2/`
+   - Should return JSON with site information
+
+## 🔧 Usage
+
+### With Claude Desktop
+
+Add this configuration to your Claude Desktop config file:
+
+**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`  
+**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`  
+**Linux**: `~/.config/Claude/claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "wordpress": {
+      "command": "node",
+      "args": ["/path/to/mcp-wordpress/src/index.js"],
+      "env": {
+        "WORDPRESS_URL": "https://your-site.com",
+        "WORDPRESS_USERNAME": "your_username",
+        "WORDPRESS_APP_PASSWORD": "your_application_password",
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+      }
+    }
+  }
+}
+```
+
+### With Augment Code
+
+1. **Go to Workspace Settings → Tools → MCP**
+2. **Add new server**:
+   - **Name**: `wordpress`
+   - **Command**: `node /path/to/mcp-wordpress/src/index.js`
+   - **Environment Variables**: (same as above)
+
+### Standalone Server
+
 ```bash
-npm install
+# Start the MCP server
+npm run start
+
+# Start with debug logging
+npm run dev
+
+# Start specific version
+node src/index.js          # Production version
+node src/index-debug.js    # Debug version
 ```
 
-### Configuration
-Create a `.env` file with your WordPress credentials:
+## 🛠️ Available Tools (54 Total)
 
-```env
-WORDPRESS_SITE_URL=https://your-wordpress-site.com
-WORDPRESS_USERNAME=your-username
-WORDPRESS_APP_PASSWORD=xxxx xxxx xxxx xxxx xxxx xxxx
-WORDPRESS_AUTH_METHOD=app-password
-```
-
-**Alternative Authentication Methods:**
-```env
-# JWT Authentication (requires JWT plugin)
-WORDPRESS_AUTH_METHOD=jwt
-WORDPRESS_JWT_SECRET=your-jwt-secret
-
-# Basic Authentication (not recommended for production)
-WORDPRESS_AUTH_METHOD=basic
-WORDPRESS_PASSWORD=your-actual-password
-
-# API Key Authentication (requires API key plugin)
-WORDPRESS_AUTH_METHOD=api-key
-WORDPRESS_API_KEY=your-api-key
-```
-
-### Test Your Configuration
-```bash
-# Check WordPress connectivity and tool loading
-npm run status
-
-# Run comprehensive integration tests
-npm run test:mcp
-```
-
-### Run the Server
-```bash
-npm start
-```
-
-## Authentication
-
-WordPress REST API supports multiple authentication methods:
-
-1. **Application Passwords** (Recommended)
-   - WordPress 5.6+ native support
-   - User-specific app passwords
-   - HTTP Basic Auth over HTTPS
-
-2. **JWT Authentication** (Plugin required)
-   - JSON Web Tokens
-   - Stateless authentication
-
-3. **OAuth 2.0** (Plugin required)
-   - For external applications
-
-## Available Tools (54 Total)
-
-This MCP server provides **54 comprehensive WordPress management tools** organized into 8 categories:
-
-### 📝 Posts (8 tools)
-- `wp_create_post` - Create new blog posts with full content support
-- `wp_get_post` - Retrieve specific post by ID with all metadata
-- `wp_update_post` - Edit existing posts (content, status, metadata)
-- `wp_delete_post` - Delete posts permanently or move to trash
-- `wp_list_posts` - List posts with filtering, sorting, and pagination
-- `wp_search_posts` - Search posts by title, content, or metadata
+### 📝 Posts Management (6 tools)
+- `wp_list_posts` - List WordPress posts with filtering
+- `wp_get_post` - Get specific post details
+- `wp_create_post` - Create new posts
+- `wp_update_post` - Update existing posts
+- `wp_delete_post` - Delete posts (trash/permanent)
 - `wp_get_post_revisions` - Get post revision history
-- `wp_duplicate_post` - Duplicate existing posts
 
-### 📄 Pages (7 tools)
-- `wp_create_page` - Create new static pages
-- `wp_get_page` - Retrieve specific page by ID
-- `wp_update_page` - Edit existing pages
+### 📄 Pages Management (6 tools)
+- `wp_list_pages` - List WordPress pages
+- `wp_get_page` - Get specific page details
+- `wp_create_page` - Create new pages
+- `wp_update_page` - Update existing pages
 - `wp_delete_page` - Delete pages
-- `wp_list_pages` - List pages with hierarchy support
-- `wp_search_pages` - Search pages by title or content
-- `wp_get_page_hierarchy` - Get page parent-child relationships
+- `wp_get_page_revisions` - Get page revision history
 
-### 🖼️ Media (8 tools)
-- `wp_upload_media` - Upload images, videos, documents with metadata
-- `wp_get_media` - Retrieve media file details and URLs
-- `wp_update_media` - Edit media metadata (title, alt text, description)
-- `wp_delete_media` - Delete media files from library
-- `wp_list_media` - Browse media library with filtering
-- `wp_search_media` - Search media by filename or metadata
-- `wp_get_media_sizes` - Get available image sizes for media
-- `wp_regenerate_thumbnails` - Regenerate image thumbnails
+### 🖼️ Media Management (6 tools)
+- `wp_list_media` - List media files with filtering
+- `wp_get_media` - Get media file details
+- `wp_upload_media` - Upload new media files
+- `wp_update_media` - Update media metadata
+- `wp_delete_media` - Delete media files
+- `wp_get_media_sizes` - Get available image sizes
 
-### 👥 Users (7 tools)
-- `wp_create_user` - Create new user accounts with roles
-- `wp_get_user` - Get user profile information
-- `wp_update_user` - Update user profiles and settings
-- `wp_delete_user` - Delete user accounts
-- `wp_list_users` - List users with role filtering
-- `wp_search_users` - Search users by name or email
-- `wp_update_user_role` - Change user roles and capabilities
+### 👥 User Management (6 tools)
+- `wp_list_users` - List WordPress users
+- `wp_get_user` - Get user details
+- `wp_get_current_user` - Get current authenticated user
+- `wp_create_user` - Create new users
+- `wp_update_user` - Update user information
+- `wp_delete_user` - Delete users
 
-### 💬 Comments (6 tools)
-- `wp_get_comment` - Retrieve specific comment details
-- `wp_update_comment` - Edit comment content and metadata
-- `wp_delete_comment` - Delete comments permanently
-- `wp_list_comments` - List comments with status filtering
+### 💬 Comments Management (7 tools)
+- `wp_list_comments` - List comments with filtering
+- `wp_get_comment` - Get comment details
+- `wp_create_comment` - Create new comments
+- `wp_update_comment` - Update comments
+- `wp_delete_comment` - Delete comments
 - `wp_approve_comment` - Approve pending comments
 - `wp_spam_comment` - Mark comments as spam
 
-### 🏷️ Taxonomies (8 tools)
-- `wp_create_category` - Create new post categories
+### 🏷️ Taxonomy Management (10 tools)
+- `wp_list_categories` - List categories
 - `wp_get_category` - Get category details
-- `wp_update_category` - Edit category information
+- `wp_create_category` - Create new categories
+- `wp_update_category` - Update categories
 - `wp_delete_category` - Delete categories
-- `wp_list_categories` - List all categories with hierarchy
-- `wp_create_tag` - Create new post tags
+- `wp_list_tags` - List tags
 - `wp_get_tag` - Get tag details
-- `wp_list_tags` - List all tags
+- `wp_create_tag` - Create new tags
+- `wp_update_tag` - Update tags
+- `wp_delete_tag` - Delete tags
 
-### ⚙️ Site Management (6 tools)
-- `wp_get_site_info` - Get WordPress site information and stats
-- `wp_get_site_settings` - Retrieve site settings and configuration
-- `wp_update_site_settings` - Update site settings
-- `wp_get_site_health` - Check site health and system status
-- `wp_clear_cache` - Clear various caches (if caching plugins installed)
-- `wp_backup_database` - Create database backup (if backup plugins installed)
+### ⚙️ Site Management (7 tools)
+- `wp_get_site_settings` - Get WordPress site settings
+- `wp_update_site_settings` - Update site configuration
+- `wp_get_site_stats` - Get site statistics
+- `wp_search_site` - Search across site content
+- `wp_get_application_passwords` - List application passwords
+- `wp_create_application_password` - Create new app passwords
+- `wp_delete_application_password` - Delete app passwords
 
-### 🔐 Authentication (4 tools)
-- `wp_verify_connection` - Test WordPress REST API connectivity
-- `wp_get_current_user` - Get current authenticated user info
-- `wp_test_permissions` - Test user permissions for various operations
-- `wp_refresh_auth` - Refresh authentication tokens (JWT/OAuth)
+### 🔐 Authentication (6 tools)
+- `wp_test_auth` - Test WordPress connection
+- `wp_get_auth_status` - Get authentication status
+- `wp_start_oauth_flow` - Start OAuth authentication
+- `wp_complete_oauth_flow` - Complete OAuth flow
+- `wp_refresh_oauth_token` - Refresh OAuth tokens
+- `wp_switch_auth_method` - Switch authentication methods
 
-## Utility Scripts
+## 💬 Example Conversations
 
-### Interactive Setup Wizard
-Run the setup wizard to configure your WordPress connection:
+Once connected to an AI assistant, you can use natural language:
 
-```bash
-npm run setup
-# or
-node bin/setup.js
+```
+"What are my latest WordPress posts?"
+"Create a new blog post about AI and WordPress"
+"Upload this image to my media library"
+"Show me pending comments that need moderation"
+"Update my site title and description"
+"List all users with administrator roles"
+"Search my site for posts about 'technology'"
 ```
 
-**Features:**
-- Interactive WordPress site URL configuration
-- Authentication method selection (App Password, JWT, Basic, API Key)
-- Connection testing and validation
-- Claude Desktop configuration generation
-- Step-by-step integration instructions
+## 🧪 Development & Testing
 
-### Status Checker
-Check your WordPress connection and server status:
+### Testing Commands
 
 ```bash
+# Test WordPress connection and authentication
+npm run test:connection
+
+# Test all MCP tools functionality
+npm run test:tools
+
+# Check server status and configuration
 npm run status
-# or  
-node bin/status.js
-```
 
-**Diagnostics Include:**
-- ✅ Configuration validation
-- 🔌 WordPress REST API connectivity
-- 🔐 Authentication method testing
-- 🛠️ Tool loading verification (54 tools across 8 categories)
-- 👤 User permissions checking
-- 📊 Detailed connection diagnostics
-
-### MCP Integration Tests
-Run comprehensive integration tests:
-
-```bash
-npm run test:mcp
-# or
-node scripts/test-mcp.js
-```
-
-**Test Coverage:**
-- 🚀 MCP server startup and initialization
-- 📋 Tool listing verification (54 tools)
-- 🔐 Authentication method testing
-- 🧪 All tool categories validation
-- ⚡ Error handling verification
-- 📊 Detailed test reporting
-
-## Security
-
-### WordPress Application Passwords (Recommended)
-WordPress 5.6+ includes native Application Password support:
-
-1. Go to **Users → Profile** in WordPress admin
-2. Scroll to **Application Passwords** section
-3. Enter application name (e.g., "MCP WordPress Server")
-4. Click **Add New Application Password**
-5. Copy the generated password (format: `xxxx xxxx xxxx xxxx xxxx xxxx`)
-6. Use this password in your `.env` file as `WORDPRESS_APP_PASSWORD`
-
-### Authentication Methods Comparison
-
-| Method | Security | Setup | WordPress Version | Plugins Required |
-|--------|----------|-------|-------------------|------------------|
-| **App Password** | ⭐⭐⭐⭐⭐ | Easy | 5.6+ | None |
-| **JWT** | ⭐⭐⭐⭐ | Medium | Any | JWT Auth Plugin |
-| **Basic Auth** | ⭐⭐ | Easy | Any | None (not recommended) |
-| **API Key** | ⭐⭐⭐⭐ | Medium | Any | API Key Plugin |
-
-### Best Practices
-- HTTPS only for all API calls
-- Use Application Passwords instead of real user passwords
-- Implement least privilege principle
-- Validate all input parameters
-- Sanitize all output responses
-- Audit log all operations
-
-### WordPress User Roles
-- **Administrator** - Full access to all functions
-- **Editor** - Posts, pages, comments, media
-- **Author** - Own posts and media
-- **Contributor** - Own posts (draft only)
-- **Subscriber** - Read only
-
-## Development
-
-### Project Structure
-```
-src/
-├── index.js              # MCP Server Entry Point
-├── tools/                # MCP Tool Definitions
-│   ├── posts.js         # Post Management Tools
-│   ├── pages.js         # Page Management Tools
-│   ├── media.js         # Media Management Tools
-│   ├── users.js         # User Management Tools
-│   ├── comments.js      # Comment Management Tools
-│   ├── taxonomies.js    # Categories/Tags Tools
-│   ├── site.js          # Site Settings Tools
-│   └── navigation.js    # Menu Management Tools
-├── client/               # WordPress API Client
-│   ├── api.js           # HTTP Client
-│   ├── auth.js          # Authentication
-│   └── types.js         # Type Definitions
-├── utils/                # Utilities
-│   ├── validation.js    # Schema Validation
-│   ├── formatting.js    # Data Formatting
-│   ├── errors.js        # Error Handling
-│   └── debug.js         # Debug Logger
-└── config/
-    └── schema.js         # MCP Tool Schemas
-```
-
-### Testing
-```bash
-npm test
-npm run test:integration
-npm run test:e2e
+# Test specific site (for Laragon/local development)
+npm run test:laragon
 ```
 
 ### Debug Mode
-```bash
-DEBUG=true npm start
+
+For development and troubleshooting:
+
+
+
+# Test with debug output
+DEBUG=true npm run test:connection
 ```
 
-## Contributing
+### Local Development (Laragon)
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+For local WordPress development with Laragon:
 
-## License
+```env
+WORDPRESS_URL=https://your-site.test
+NODE_TLS_REJECT_UNAUTHORIZED=0
+DEBUG=true
+```
 
-MIT License - see LICENSE file for details
+## 📁 Project Structure
 
-## Support
+```
+mcp-wordpress/
+├── src/
+│   ├── index.js              # Main production server
+│   ├── index-debug.js        # Debug version with logging
+│   ├── client/
+│   │   └── api.js           # WordPress REST API client
+│   ├── tools/               # MCP tool definitions
+│   │   ├── posts.js         # Posts management tools
+│   │   ├── pages.js         # Pages management tools
+│   │   ├── media.js         # Media management tools
+│   │   ├── users.js         # User management tools
+│   │   ├── comments.js      # Comments management tools
+│   │   ├── taxonomies.js    # Categories & tags tools
+│   │   ├── site.js          # Site management tools
+│   │   └── auth.js          # Authentication tools
+│   └── utils/
+│       └── debug.js         # Debug logging utility
+├── bin/                     # CLI utilities
+├── test/                    # Test files
+├── .env.example            # Environment template
+├── package.json
+└── README.md
+```
 
-For issues and questions:
-- GitHub Issues: [Create an issue](https://github.com/your-repo/issues)
-- Documentation: Check the `docs/` folder
-- WordPress REST API: [Official Documentation](https://developer.wordpress.org/rest-api/)
+## 🔧 Configuration Examples
+
+### Production Environment
+
+```env
+WORDPRESS_URL=https://mysite.com
+WORDPRESS_USERNAME=admin
+WORDPRESS_APP_PASSWORD=xxxx xxxx xxxx xxxx xxxx xxxx
+NODE_TLS_REJECT_UNAUTHORIZED=1
+DEBUG=false
+WORDPRESS_TIMEOUT=30000
+```
+
+### Development Environment
+
+```env
+WORDPRESS_URL=https://mysite.test
+WORDPRESS_USERNAME=admin
+WORDPRESS_APP_PASSWORD=xxxx xxxx xxxx xxxx xxxx xxxx
+NODE_TLS_REJECT_UNAUTHORIZED=0
+DEBUG=true
+WORDPRESS_TIMEOUT=10000
+```
+
+### Laragon Local Development
+
+```env
+WORDPRESS_URL=https://saterembiga.test
+WORDPRESS_USERNAME=admin
+WORDPRESS_APP_PASSWORD=your_app_password
+NODE_TLS_REJECT_UNAUTHORIZED=0
+DEBUG=true
+```
+
+## 🚨 Troubleshooting
+
+### Common Issues
+
+**Connection Refused**
+```bash
+# Check if WordPress site is accessible
+curl -I https://your-site.com/wp-json/wp/v2/
+
+# Test with debug mode
+DEBUG=true npm run test:connection
+```
+
+**Authentication Failed**
+- Verify Application Password is correct
+- Check username is correct (not display name)
+- Ensure Application Passwords are enabled
+
+**SSL Certificate Issues**
+```env
+# For development/self-signed certificates
+NODE_TLS_REJECT_UNAUTHORIZED=0
+
+# For production with valid SSL
+NODE_TLS_REJECT_UNAUTHORIZED=1
+```
+
+**MCP Connection Issues**
+- Restart your MCP client (Claude Desktop, etc.)
+- Check the server path in MCP configuration
+- Verify environment variables are set correctly
+
+### Debug Commands
+
+```bash
+# Comprehensive connection test
+npm run test:connection
+
+# Test individual components
+node test-tools.js
+node test-laragon.js
+
+# Check server startup
+DEBUG=true node src/index.js
+```
+
+## 🤝 Contributing
+
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
+3. **Commit changes**: `git commit -m 'Add amazing feature'`
+4. **Push to branch**: `git push origin feature/amazing-feature`
+5. **Open a Pull Request**
+
+### Development Setup
+
+```bash
+git clone https://github.com/your-username/mcp-wordpress.git
+cd mcp-wordpress
+npm install
+cp .env.example .env
+# Configure .env with your test WordPress site
+npm run test:connection
+```
+
+## 📊 Performance & Scalability
+
+### Optimizations
+- **Connection Pooling**: Efficient HTTP connection management
+- **Request Caching**: Smart caching for frequently accessed data
+- **Batch Operations**: Bulk processing for multiple items
+- **Rate Limiting**: Respectful API usage
+
+### Monitoring
+- **Health Checks**: Built-in server health monitoring
+- **Error Tracking**: Comprehensive error logging
+- **Performance Metrics**: Request timing and success rates
+
+## 🔒 Security Best Practices
+
+### Authentication
+- **Application Passwords**: Recommended for production
+- **OAuth 2.0**: Enterprise-grade authentication
+- **JWT Tokens**: Stateless authentication support
+
+### Data Protection
+- **HTTPS Only**: Encrypted connections required
+- **Input Validation**: All inputs sanitized and validated
+- **Error Sanitization**: Sensitive data never exposed in errors
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Model Context Protocol** - For the excellent MCP framework
+- **WordPress REST API** - For comprehensive API access
+- **Node.js Community** - For amazing ecosystem support
+- **Laragon** - For excellent local development environment
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/your-username/mcp-wordpress/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-username/mcp-wordpress/discussions)
+- **Documentation**: [Wiki](https://github.com/your-username/mcp-wordpress/wiki)
+
+## 🎯 Roadmap
+
+### Upcoming Features
+- **Custom Post Types**: Enhanced support for custom content
+- **WooCommerce Integration**: E-commerce management tools
+- **Multisite Support**: WordPress network management
+- **Plugin Management**: Install and configure plugins
+- **Theme Customization**: Advanced theme management
+- **SEO Tools**: Built-in SEO optimization features
+
+### Version History
+- **v1.0.0** - Initial release with 54 WordPress tools
+- **v1.1.0** - Enhanced error handling and debug features
+- **v1.2.0** - Laragon support and local development tools
 
 ---
 
-**Note**: This server requires WordPress 5.0+ and uses the WordPress REST API v2. Ensure your WordPress installation has the REST API enabled and properly configured.
+**Made with ❤️ for the WordPresscommunity**
+
+*Transform your WordPress management experience with the power of AI!*

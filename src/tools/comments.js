@@ -329,7 +329,7 @@ export const spamComment = {
 
 export async function handleListComments(apiClient, args) {
   try {
-    debug('Listing comments with args:', args);
+    debug.log('Listing comments with args:', args);
     
     const params = new URLSearchParams();
     
@@ -387,14 +387,14 @@ export async function handleListComments(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error listing comments:', error);
+    debug.log('Error listing comments:', error);
     throw new Error(`Failed to list comments: ${error.message}`);
   }
 }
 
 export async function handleGetComment(apiClient, args) {
   try {
-    debug('Getting comment with ID:', args.id);
+    debug.log('Getting comment with ID:', args.id);
     
     const comment = await apiClient.getComment(args.id, args.context, args.password);
     
@@ -417,14 +417,14 @@ export async function handleGetComment(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting comment:', error);
+    debug.log('Error getting comment:', error);
     throw new Error(`Failed to get comment: ${error.message}`);
   }
 }
 
 export async function handleCreateComment(apiClient, args) {
   try {
-    debug('Creating comment for post:', args.post);
+    debug.log('Creating comment for post:', args.post);
     
     const commentData = {
       post: args.post,
@@ -457,14 +457,14 @@ export async function handleCreateComment(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error creating comment:', error);
+    debug.log('Error creating comment:', error);
     throw new Error(`Failed to create comment: ${error.message}`);
   }
 }
 
 export async function handleUpdateComment(apiClient, args) {
   try {
-    debug('Updating comment with ID:', args.id);
+    debug.log('Updating comment with ID:', args.id);
     
     const { id, ...updateData } = args;
     const comment = await apiClient.updateComment(id, updateData);
@@ -480,14 +480,14 @@ export async function handleUpdateComment(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error updating comment:', error);
+    debug.log('Error updating comment:', error);
     throw new Error(`Failed to update comment: ${error.message}`);
   }
 }
 
 export async function handleDeleteComment(apiClient, args) {
   try {
-    debug('Deleting comment with ID:', args.id);
+    debug.log('Deleting comment with ID:', args.id);
     
     const result = await apiClient.deleteComment(args.id, args.force, args.password);
     
@@ -500,14 +500,14 @@ export async function handleDeleteComment(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error deleting comment:', error);
+    debug.log('Error deleting comment:', error);
     throw new Error(`Failed to delete comment: ${error.message}`);
   }
 }
 
 export async function handleApproveComment(apiClient, args) {
   try {
-    debug('Approving comment with ID:', args.id);
+    debug.log('Approving comment with ID:', args.id);
     
     const comment = await apiClient.updateComment(args.id, { status: 'approve' });
     
@@ -521,14 +521,14 @@ export async function handleApproveComment(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error approving comment:', error);
+    debug.log('Error approving comment:', error);
     throw new Error(`Failed to approve comment: ${error.message}`);
   }
 }
 
 export async function handleSpamComment(apiClient, args) {
   try {
-    debug('Marking comment as spam with ID:', args.id);
+    debug.log('Marking comment as spam with ID:', args.id);
     
     const comment = await apiClient.updateComment(args.id, { status: 'spam' });
     
@@ -541,7 +541,7 @@ export async function handleSpamComment(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error marking comment as spam:', error);
+    debug.log('Error marking comment as spam:', error);
     throw new Error(`Failed to mark comment as spam: ${error.message}`);
   }
 }

@@ -17,6 +17,8 @@
     "test": "node scripts/test-mcp.js",
     "test:integration": "node scripts/test-integration.js",
     "test:auth": "node scripts/test-auth.js",
+    "test:site": "node test-wordpress-site.js",
+    "test:connection": "node test-connection.js",
     "dev": "DEBUG=true node src/index.js"
   },
   "keywords": [

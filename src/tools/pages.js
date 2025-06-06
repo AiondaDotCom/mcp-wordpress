@@ -279,7 +279,7 @@ export const getPageRevisions = {
 
 export async function handleListPages(apiClient, args) {
   try {
-    debug('Listing pages with args:', args);
+    debug.log('Listing pages with args:', args);
     
     const params = new URLSearchParams();
     
@@ -313,14 +313,14 @@ export async function handleListPages(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error listing pages:', error);
+    debug.log('Error listing pages:', error);
     throw new Error(`Failed to list pages: ${error.message}`);
   }
 }
 
 export async function handleGetPage(apiClient, args) {
   try {
-    debug('Getting page with ID:', args.id);
+    debug.log('Getting page with ID:', args.id);
     
     const page = await apiClient.getPage(args.id, args.context);
     
@@ -343,14 +343,14 @@ export async function handleGetPage(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting page:', error);
+    debug.log('Error getting page:', error);
     throw new Error(`Failed to get page: ${error.message}`);
   }
 }
 
 export async function handleCreatePage(apiClient, args) {
   try {
-    debug('Creating page with args:', args);
+    debug.log('Creating page with args:', args);
     
     const pageData = {
       title: args.title,
@@ -385,14 +385,14 @@ export async function handleCreatePage(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error creating page:', error);
+    debug.log('Error creating page:', error);
     throw new Error(`Failed to create page: ${error.message}`);
   }
 }
 
 export async function handleUpdatePage(apiClient, args) {
   try {
-    debug('Updating page with ID:', args.id);
+    debug.log('Updating page with ID:', args.id);
     
     const { id, ...updateData } = args;
     const page = await apiClient.updatePage(id, updateData);
@@ -408,14 +408,14 @@ export async function handleUpdatePage(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error updating page:', error);
+    debug.log('Error updating page:', error);
     throw new Error(`Failed to update page: ${error.message}`);
   }
 }
 
 export async function handleDeletePage(apiClient, args) {
   try {
-    debug('Deleting page with ID:', args.id);
+    debug.log('Deleting page with ID:', args.id);
     
     const result = await apiClient.deletePage(args.id, args.force);
     
@@ -428,14 +428,14 @@ export async function handleDeletePage(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error deleting page:', error);
+    debug.log('Error deleting page:', error);
     throw new Error(`Failed to delete page: ${error.message}`);
   }
 }
 
 export async function handleGetPageRevisions(apiClient, args) {
   try {
-    debug('Getting page revisions for ID:', args.id);
+    debug.log('Getting page revisions for ID:', args.id);
     
     const revisions = await apiClient.getPageRevisions(args.id, args.context);
     
@@ -453,7 +453,7 @@ export async function handleGetPageRevisions(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting page revisions:', error);
+    debug.log('Error getting page revisions:', error);
     throw new Error(`Failed to get page revisions: ${error.message}`);
   }
 }

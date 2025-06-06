@@ -127,7 +127,7 @@ export const switchAuthMethod = {
 
 export async function handleTestAuth(apiClient, args) {
   try {
-    debug('Testing WordPress authentication');
+    debug.log('Testing WordPress authentication');
     
     // Try to get current user to test authentication
     const user = await apiClient.getCurrentUser();
@@ -143,13 +143,13 @@ export async function handleTestAuth(apiClient, args) {
               `**User Email:** ${user.email}\n` +
               `**User Roles:** ${user.roles.join(', ')}\n` +
               `**User ID:** ${user.id}\n\n` +
-              `**Authentication Method:** ${apiClient.auth.getCurrentMethod()}\n` +
+              `**Authentication Method:** ${apiClient.auth.method}\n` +
               `**Connection Status:** Active and working\n\n` +
               `You can now use all WordPress MCP tools to manage your site.`
       }]
     };
   } catch (error) {
-    debug('Authentication test failed:', error);
+    debug.log('Authentication test failed:', error);
     
     let errorMessage = 'Authentication failed. ';
     let suggestions = '';
@@ -195,10 +195,10 @@ export async function handleTestAuth(apiClient, args) {
 
 export async function handleGetAuthStatus(apiClient, args) {
   try {
-    debug('Getting authentication status');
+    debug.log('Getting authentication status');
     
-    const currentMethod = apiClient.auth.getCurrentMethod();
-    const isAuthenticated = await apiClient.auth.isAuthenticated();
+    const currentMethod = apiClient.auth.method;
+    const isAuthenticated = apiClient.authenticated;
     
     let statusText = `**WordPress Authentication Status**\n\n`;
     statusText += `**Current Method:** ${currentMethod}\n`;
@@ -260,16 +260,17 @@ export async function handleGetAuthStatus(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting auth status:', error);
+    debug.log('Error getting auth status:', error);
     throw new Error(`Failed to get authentication status: ${error.message}`);
   }
 }
 
 export async function handleStartOAuthFlow(apiClient, args) {
   try {
-    debug('Starting OAuth flow');
-    
-    const oauthUrl = await apiClient.auth.startOAuthFlow(args.client_id, args.redirect_uri, args.scope);
+    debug.log('Starting OAuth flow');
+
+    // For now, return a placeholder message as OAuth flow requires more complex implementation
+    throw new Error('OAuth flow not yet implemented. Please use Application Password authentication.');
     
     return {
       content: [{
@@ -287,16 +288,16 @@ export async function handleStartOAuthFlow(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error starting OAuth flow:', error);
+    debug.log('Error starting OAuth flow:', error);
     throw new Error(`Failed to start OAuth flow: ${error.message}`);
   }
 }
 
 export async function handleCompleteOAuthFlow(apiClient, args) {
   try {
-    debug('Completing OAuth flow with code');
-    
-    const tokens = await apiClient.auth.completeOAuthFlow(args.code, args.state);
+    debug.log('Completing OAuth flow with code');
+
+    throw new Error('OAuth flow not yet implemented. Please use Application Password authentication.');
     
     return {
       content: [{
@@ -312,16 +313,16 @@ export async function handleCompleteOAuthFlow(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error completing OAuth flow:', error);
+    debug.log('Error completing OAuth flow:', error);
     throw new Error(`Failed to complete OAuth flow: ${error.message}`);
   }
 }
 
 export async function handleRefreshOAuthToken(apiClient, args) {
   try {
-    debug('Refreshing OAuth token');
-    
-    const tokens = await apiClient.auth.refreshToken(args.refresh_token);
+    debug.log('Refreshing OAuth token');
+
+    throw new Error('OAuth token refresh not yet implemented. Please use Application Password authentication.');
     
     return {
       content: [{
@@ -336,16 +337,16 @@ export async function handleRefreshOAuthToken(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error refreshing OAuth token:', error);
+    debug.log('Error refreshing OAuth token:', error);
     throw new Error(`Failed to refresh OAuth token: ${error.message}`);
   }
 }
 
 export async function handleSwitchAuthMethod(apiClient, args) {
   try {
-    debug('Switching authentication method to:', args.method);
-    
-    await apiClient.auth.switchMethod(args.method, args.credentials);
+    debug.log('Switching authentication method to:', args.method);
+
+    throw new Error('Switching authentication method not yet implemented. Please restart with new credentials.');
     
     // Test the new authentication method
     let testResult = '';
@@ -370,7 +371,7 @@ export async function handleSwitchAuthMethod(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error switching auth method:', error);
+    debug.log('Error switching auth method:', error);
     throw new Error(`Failed to switch authentication method: ${error.message}`);
   }
 }

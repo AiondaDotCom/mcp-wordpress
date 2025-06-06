@@ -50,3 +50,8 @@ export const silent = {
  * Get appropriate logger based on environment
  */
 export const logger = DEBUG_MODE ? debug : silent;
+
+/**
+ * Default export for compatibility
+ */
+export default debug.log;

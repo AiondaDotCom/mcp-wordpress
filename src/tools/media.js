@@ -245,7 +245,7 @@ export const getMediaSizes = {
 
 export async function handleListMedia(apiClient, args) {
   try {
-    debug('Listing media with args:', args);
+    debug.log('Listing media with args:', args);
     
     const params = new URLSearchParams();
     
@@ -282,14 +282,14 @@ export async function handleListMedia(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error listing media:', error);
+    debug.log('Error listing media:', error);
     throw new Error(`Failed to list media: ${error.message}`);
   }
 }
 
 export async function handleGetMedia(apiClient, args) {
   try {
-    debug('Getting media with ID:', args.id);
+    debug.log('Getting media with ID:', args.id);
     
     const media = await apiClient.getMedia(args.id, args.context);
     
@@ -320,14 +320,14 @@ export async function handleGetMedia(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting media:', error);
+    debug.log('Error getting media:', error);
     throw new Error(`Failed to get media: ${error.message}`);
   }
 }
 
 export async function handleUploadMedia(apiClient, args) {
   try {
-    debug('Uploading media from path:', args.file_path);
+    debug.log('Uploading media from path:', args.file_path);
     
     // Check if file exists
     if (!fs.existsSync(args.file_path)) {
@@ -376,14 +376,14 @@ export async function handleUploadMedia(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error uploading media:', error);
+    debug.log('Error uploading media:', error);
     throw new Error(`Failed to upload media: ${error.message}`);
   }
 }
 
 export async function handleUpdateMedia(apiClient, args) {
   try {
-    debug('Updating media with ID:', args.id);
+    debug.log('Updating media with ID:', args.id);
     
     const { id, ...updateData } = args;
     const media = await apiClient.updateMedia(id, updateData);
@@ -399,14 +399,14 @@ export async function handleUpdateMedia(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error updating media:', error);
+    debug.log('Error updating media:', error);
     throw new Error(`Failed to update media: ${error.message}`);
   }
 }
 
 export async function handleDeleteMedia(apiClient, args) {
   try {
-    debug('Deleting media with ID:', args.id);
+    debug.log('Deleting media with ID:', args.id);
     
     const result = await apiClient.deleteMedia(args.id, args.force);
     
@@ -419,14 +419,14 @@ export async function handleDeleteMedia(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error deleting media:', error);
+    debug.log('Error deleting media:', error);
     throw new Error(`Failed to delete media: ${error.message}`);
   }
 }
 
 export async function handleGetMediaSizes(apiClient, args) {
   try {
-    debug('Getting media sizes for ID:', args.id);
+    debug.log('Getting media sizes for ID:', args.id);
     
     const media = await apiClient.getMedia(args.id);
     
@@ -454,7 +454,7 @@ export async function handleGetMediaSizes(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting media sizes:', error);
+    debug.log('Error getting media sizes:', error);
     throw new Error(`Failed to get media sizes: ${error.message}`);
   }
 }

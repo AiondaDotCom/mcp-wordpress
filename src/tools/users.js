@@ -276,7 +276,7 @@ export const deleteUser = {
 
 export async function handleListUsers(apiClient, args) {
   try {
-    debug('Listing users with args:', args);
+    debug.log('Listing users with args:', args);
     
     const params = new URLSearchParams();
     
@@ -321,14 +321,14 @@ export async function handleListUsers(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error listing users:', error);
+    debug.log('Error listing users:', error);
     throw new Error(`Failed to list users: ${error.message}`);
   }
 }
 
 export async function handleGetUser(apiClient, args) {
   try {
-    debug('Getting user with ID:', args.id);
+    debug.log('Getting user with ID:', args.id);
     
     const user = await apiClient.getUser(args.id, args.context);
     
@@ -354,14 +354,14 @@ export async function handleGetUser(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting user:', error);
+    debug.log('Error getting user:', error);
     throw new Error(`Failed to get user: ${error.message}`);
   }
 }
 
 export async function handleGetCurrentUser(apiClient, args) {
   try {
-    debug('Getting current user info');
+    debug.log('Getting current user info');
     
     const user = await apiClient.getCurrentUser(args.context);
     
@@ -380,14 +380,14 @@ export async function handleGetCurrentUser(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting current user:', error);
+    debug.log('Error getting current user:', error);
     throw new Error(`Failed to get current user: ${error.message}`);
   }
 }
 
 export async function handleCreateUser(apiClient, args) {
   try {
-    debug('Creating user with username:', args.username);
+    debug.log('Creating user with username:', args.username);
     
     const userData = {
       username: args.username,
@@ -422,14 +422,14 @@ export async function handleCreateUser(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error creating user:', error);
+    debug.log('Error creating user:', error);
     throw new Error(`Failed to create user: ${error.message}`);
   }
 }
 
 export async function handleUpdateUser(apiClient, args) {
   try {
-    debug('Updating user with ID:', args.id);
+    debug.log('Updating user with ID:', args.id);
     
     const { id, ...updateData } = args;
     const user = await apiClient.updateUser(id, updateData);
@@ -445,14 +445,14 @@ export async function handleUpdateUser(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error updating user:', error);
+    debug.log('Error updating user:', error);
     throw new Error(`Failed to update user: ${error.message}`);
   }
 }
 
 export async function handleDeleteUser(apiClient, args) {
   try {
-    debug('Deleting user with ID:', args.id);
+    debug.log('Deleting user with ID:', args.id);
     
     if (!args.force) {
       throw new Error('Users cannot be trashed, force parameter must be true');
@@ -470,7 +470,7 @@ export async function handleDeleteUser(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error deleting user:', error);
+    debug.log('Error deleting user:', error);
     throw new Error(`Failed to delete user: ${error.message}`);
   }
 }

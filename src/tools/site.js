@@ -191,7 +191,7 @@ export const deleteApplicationPassword = {
 
 export async function handleGetSiteSettings(apiClient, args) {
   try {
-    debug('Getting site settings');
+    debug.log('Getting site settings');
     
     const settings = await apiClient.getSiteSettings();
     
@@ -221,14 +221,14 @@ export async function handleGetSiteSettings(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting site settings:', error);
+    debug.log('Error getting site settings:', error);
     throw new Error(`Failed to get site settings: ${error.message}`);
   }
 }
 
 export async function handleUpdateSiteSettings(apiClient, args) {
   try {
-    debug('Updating site settings with:', args);
+    debug.log('Updating site settings with:', args);
     
     const settings = await apiClient.updateSiteSettings(args);
     
@@ -248,14 +248,14 @@ export async function handleUpdateSiteSettings(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error updating site settings:', error);
+    debug.log('Error updating site settings:', error);
     throw new Error(`Failed to update site settings: ${error.message}`);
   }
 }
 
 export async function handleGetSiteStats(apiClient, args) {
   try {
-    debug('Getting site statistics');
+    debug.log('Getting site statistics');
     
     // Get various statistics by making multiple API calls
     const [posts, pages, media, users, comments, categories, tags] = await Promise.all([
@@ -295,14 +295,14 @@ export async function handleGetSiteStats(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting site statistics:', error);
+    debug.log('Error getting site statistics:', error);
     throw new Error(`Failed to get site statistics: ${error.message}`);
   }
 }
 
 export async function handleSearchSite(apiClient, args) {
   try {
-    debug('Searching site for:', args.search);
+    debug.log('Searching site for:', args.search);
     
     const params = new URLSearchParams();
     params.append('search', args.search);
@@ -346,14 +346,14 @@ export async function handleSearchSite(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error searching site:', error);
+    debug.log('Error searching site:', error);
     throw new Error(`Failed to search site: ${error.message}`);
   }
 }
 
 export async function handleGetApplicationPasswords(apiClient, args) {
   try {
-    debug('Getting application passwords');
+    debug.log('Getting application passwords');
     
     const passwords = await apiClient.getApplicationPasswords();
     
@@ -383,14 +383,14 @@ export async function handleGetApplicationPasswords(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting application passwords:', error);
+    debug.log('Error getting application passwords:', error);
     throw new Error(`Failed to get application passwords: ${error.message}`);
   }
 }
 
 export async function handleCreateApplicationPassword(apiClient, args) {
   try {
-    debug('Creating application password with name:', args.name);
+    debug.log('Creating application password with name:', args.name);
     
     const passwordData = {
       name: args.name
@@ -415,14 +415,14 @@ export async function handleCreateApplicationPassword(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error creating application password:', error);
+    debug.log('Error creating application password:', error);
     throw new Error(`Failed to create application password: ${error.message}`);
   }
 }
 
 export async function handleDeleteApplicationPassword(apiClient, args) {
   try {
-    debug('Deleting application password with UUID:', args.uuid);
+    debug.log('Deleting application password with UUID:', args.uuid);
     
     const result = await apiClient.deleteApplicationPassword(args.uuid);
     
@@ -435,7 +435,7 @@ export async function handleDeleteApplicationPassword(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error deleting application password:', error);
+    debug.log('Error deleting application password:', error);
     throw new Error(`Failed to delete application password: ${error.message}`);
   }
 }

@@ -299,7 +299,7 @@ export const getPostRevisions = {
 
 export async function handleListPosts(apiClient, args) {
   try {
-    debug('Listing posts with args:', args);
+    debug.log('Listing posts with args:', args);
     
     const params = new URLSearchParams();
     
@@ -338,14 +338,14 @@ export async function handleListPosts(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error listing posts:', error);
+    debug.log('Error listing posts:', error);
     throw new Error(`Failed to list posts: ${error.message}`);
   }
 }
 
 export async function handleGetPost(apiClient, args) {
   try {
-    debug('Getting post with ID:', args.id);
+    debug.log('Getting post with ID:', args.id);
     
     const post = await apiClient.getPost(args.id, args.context);
     
@@ -364,14 +364,14 @@ export async function handleGetPost(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting post:', error);
+    debug.log('Error getting post:', error);
     throw new Error(`Failed to get post: ${error.message}`);
   }
 }
 
 export async function handleCreatePost(apiClient, args) {
   try {
-    debug('Creating post with args:', args);
+    debug.log('Creating post with args:', args);
     
     const postData = {
       title: args.title,
@@ -407,14 +407,14 @@ export async function handleCreatePost(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error creating post:', error);
+    debug.log('Error creating post:', error);
     throw new Error(`Failed to create post: ${error.message}`);
   }
 }
 
 export async function handleUpdatePost(apiClient, args) {
   try {
-    debug('Updating post with ID:', args.id);
+    debug.log('Updating post with ID:', args.id);
     
     const { id, ...updateData } = args;
     const post = await apiClient.updatePost(id, updateData);
@@ -430,14 +430,14 @@ export async function handleUpdatePost(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error updating post:', error);
+    debug.log('Error updating post:', error);
     throw new Error(`Failed to update post: ${error.message}`);
   }
 }
 
 export async function handleDeletePost(apiClient, args) {
   try {
-    debug('Deleting post with ID:', args.id);
+    debug.log('Deleting post with ID:', args.id);
     
     const result = await apiClient.deletePost(args.id, args.force);
     
@@ -450,14 +450,14 @@ export async function handleDeletePost(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error deleting post:', error);
+    debug.log('Error deleting post:', error);
     throw new Error(`Failed to delete post: ${error.message}`);
   }
 }
 
 export async function handleGetPostRevisions(apiClient, args) {
   try {
-    debug('Getting post revisions for ID:', args.id);
+    debug.log('Getting post revisions for ID:', args.id);
     
     const revisions = await apiClient.getPostRevisions(args.id, args.context);
     
@@ -475,7 +475,7 @@ export async function handleGetPostRevisions(apiClient, args) {
       }]
     };
   } catch (error) {
-    debug('Error getting post revisions:', error);
+    debug.log('Error getting post revisions:', error);
     throw new Error(`Failed to get post revisions: ${error.message}`);
   }
 }

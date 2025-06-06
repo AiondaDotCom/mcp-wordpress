@@ -4,14 +4,15 @@
  */
 
 import fetch from 'node-fetch';
+import https from 'https';
 import { debug } from '../utils/debug.js';
 
 export class WordPressClient {
   constructor(options = {}) {
-    this.baseUrl = options.baseUrl || process.env.WORDPRESS_SITE_URL;
+    this.baseUrl = options.baseUrl || process.env.WORDPRESS_URL || process.env.WORDPRESS_SITE_URL;
     this.timeout = options.timeout || parseInt(process.env.WORDPRESS_TIMEOUT) || 30000;
     this.maxRetries = options.maxRetries || parseInt(process.env.WORDPRESS_MAX_RETRIES) || 3;
-    
+
     // Authentication configuration
     this.auth = options.auth || this.getAuthFromEnv();
 
@@ -19,11 +20,19 @@ export class WordPressClient {
     this.requestQueue = [];
     this.lastRequestTime = 0;
     this.requestInterval = 60000 / (parseInt(process.env.RATE_LIMIT) || 60); // ms between requests
-    
+
     // Initialize authentication
     this.authenticated = false;
     this.jwtToken = null;
-    
+
+    // Set API URL
+    this.apiUrl = this.baseUrl ? `${this.baseUrl}/wp-json/wp/v2` : null;
+
+    // Create HTTPS agent for handling self-signed certificates in development
+    this.httpsAgent = new https.Agent({
+      rejectUnauthorized: process.env.NODE_TLS_REJECT_UNAUTHORIZED !== '0'
+    });
+
     // Validate configuration
     this.validateConfig();
   }
@@ -82,7 +91,7 @@ export class WordPressClient {
     this.baseUrl = this.baseUrl.replace(/\/$/, '');
     this.apiUrl = `${this.baseUrl}/wp-json/wp/v2`;
     
-    debug(`WordPress API Client initialized for: ${this.apiUrl}`);
+    debug.log(`WordPress API Client initialized for: ${this.apiUrl}`);
   }
 
   /**
@@ -158,7 +167,7 @@ export class WordPressClient {
       // Test authentication by getting current user
       const response = await this.request('GET', 'users/me');
       this.authenticated = true;
-      debug('Basic/Application Password authentication successful');
+      debug.log('Basic/Application Password authentication successful');
       return response;
     } catch (error) {
       throw new Error(`Basic authentication failed: ${error.message}`);
@@ -191,7 +200,7 @@ export class WordPressClient {
 
       const data = await response.json();
       this.jwtToken = data.token;
-      debug('JWT authentication successful');
+      debug.log('JWT authentication successful');
       return data;
     } catch (error) {
       throw new Error(`JWT authentication failed: ${error.message}`);
@@ -205,7 +214,7 @@ export class WordPressClient {
     if (!this.auth.nonce) {
       throw new Error('Nonce is required for cookie authentication');
     }
-    debug('Cookie authentication configured');
+    debug.log('Cookie authentication configured');
   }
 
   /**
@@ -227,6 +236,7 @@ export class WordPressClient {
       method,
       headers,
       timeout: this.timeout,
+      agent: url.startsWith('https:') ? this.httpsAgent : undefined,
       ...options
     };
 
@@ -249,22 +259,22 @@ export class WordPressClient {
     let lastError;
     for (let attempt = 0; attempt < this.maxRetries; attempt++) {
       try {
-        debug(`API Request: ${method} ${url}${attempt > 0 ? ` (attempt ${attempt + 1})` : ''}`);
-        
+        debug.log(`API Request: ${method} ${url}${attempt > 0 ? ` (attempt ${attempt + 1})` : ''}`);
+
         const response = await fetch(url, fetchOptions);
-        
+
         // Handle different response types
         if (!response.ok) {
           const errorText = await response.text();
           let errorMessage;
-          
+
           try {
             const errorData = JSON.parse(errorText);
             errorMessage = errorData.message || errorData.error || `HTTP ${response.status}`;
           } catch {
             errorMessage = errorText || `HTTP ${response.status}: ${response.statusText}`;
           }
-          
+
           throw new Error(errorMessage);
         }
 
@@ -282,7 +292,7 @@ export class WordPressClient {
 
       } catch (error) {
         lastError = error;
-        debug(`Request failed (attempt ${attempt + 1}): ${error.message}`);
+        debug.log(`Request failed (attempt ${attempt + 1}): ${error.message}`);
         
         // Don't retry on authentication errors
         if (error.message.includes('401') || error.message.includes('403')) {
@@ -370,5 +380,232 @@ export class WordPressClient {
    */
   async updateMedia(id, data) {
     return await this.request('POST', `media/${id}`, data);
+  }
+
+  // WordPress REST API Methods
+
+  /**
+   * Posts API methods
+   */
+  async listPosts(params = {}) {
+    const queryString = params.toString();
+    const endpoint = queryString ? `posts?${queryString}` : 'posts';
+    return await this.get(endpoint);
+  }
+
+  async getPost(id, context = 'view') {
+    return await this.get(`posts/${id}?context=${context}`);
+  }
+
+  async createPost(data) {
+    return await this.post('posts', data);
+  }
+
+  async updatePost(id, data) {
+    return await this.post(`posts/${id}`, data);
+  }
+
+  async deletePost(id, force = false) {
+    return await this.delete(`posts/${id}?force=${force}`);
+  }
+
+  async getPostRevisions(id, context = 'view') {
+    return await this.get(`posts/${id}/revisions?context=${context}`);
+  }
+
+  /**
+   * Pages API methods
+   */
+  async listPages(params = {}) {
+    const queryString = params.toString();
+    const endpoint = queryString ? `pages?${queryString}` : 'pages';
+    return await this.get(endpoint);
+  }
+
+  async getPage(id, context = 'view') {
+    return await this.get(`pages/${id}?context=${context}`);
+  }
+
+  async createPage(data) {
+    return await this.post('pages', data);
+  }
+
+  async updatePage(id, data) {
+    return await this.post(`pages/${id}`, data);
+  }
+
+  async deletePage(id, force = false) {
+    return await this.delete(`pages/${id}?force=${force}`);
+  }
+
+  async getPageRevisions(id, context = 'view') {
+    return await this.get(`pages/${id}/revisions?context=${context}`);
+  }
+
+  /**
+   * Media API methods
+   */
+  async listMedia(params = {}) {
+    const queryString = params.toString();
+    const endpoint = queryString ? `media?${queryString}` : 'media';
+    return await this.get(endpoint);
+  }
+
+  async getMedia(id, context = 'view') {
+    return await this.get(`media/${id}?context=${context}`);
+  }
+
+  async deleteMedia(id, force = false) {
+    return await this.delete(`media/${id}?force=${force}`);
+  }
+
+  /**
+   * Users API methods
+   */
+  async listUsers(params = {}) {
+    const queryString = params.toString();
+    const endpoint = queryString ? `users?${queryString}` : 'users';
+    return await this.get(endpoint);
+  }
+
+  async getUser(id, context = 'view') {
+    return await this.get(`users/${id}?context=${context}`);
+  }
+
+  async createUser(data) {
+    return await this.post('users', data);
+  }
+
+  async updateUser(id, data) {
+    return await this.post(`users/${id}`, data);
+  }
+
+  async deleteUser(id, force = false, reassign = null) {
+    let endpoint = `users/${id}?force=${force}`;
+    if (reassign) {
+      endpoint += `&reassign=${reassign}`;
+    }
+    return await this.delete(endpoint);
+  }
+
+  async getCurrentUser() {
+    return await this.get('users/me');
+  }
+
+  /**
+   * Comments API methods
+   */
+  async listComments(params = {}) {
+    const queryString = params.toString();
+    const endpoint = queryString ? `comments?${queryString}` : 'comments';
+    return await this.get(endpoint);
+  }
+
+  async getComment(id, context = 'view') {
+    return await this.get(`comments/${id}?context=${context}`);
+  }
+
+  async updateComment(id, data) {
+    return await this.post(`comments/${id}`, data);
+  }
+
+  async deleteComment(id, force = false) {
+    return await this.delete(`comments/${id}?force=${force}`);
+  }
+
+  /**
+   * Categories API methods
+   */
+  async listCategories(params = {}) {
+    const queryString = params.toString();
+    const endpoint = queryString ? `categories?${queryString}` : 'categories';
+    return await this.get(endpoint);
+  }
+
+  async getCategory(id, context = 'view') {
+    return await this.get(`categories/${id}?context=${context}`);
+  }
+
+  async createCategory(data) {
+    return await this.post('categories', data);
+  }
+
+  async updateCategory(id, data) {
+    return await this.post(`categories/${id}`, data);
+  }
+
+  async deleteCategory(id, force = false) {
+    return await this.delete(`categories/${id}?force=${force}`);
+  }
+
+  /**
+   * Tags API methods
+   */
+  async listTags(params = {}) {
+    const queryString = params.toString();
+    const endpoint = queryString ? `tags?${queryString}` : 'tags';
+    return await this.get(endpoint);
+  }
+
+  async getTag(id, context = 'view') {
+    return await this.get(`tags/${id}?context=${context}`);
+  }
+
+  async createTag(data) {
+    return await this.post('tags', data);
+  }
+
+  /**
+   * Site settings and info methods
+   */
+  async getSiteSettings() {
+    return await this.get('settings');
+  }
+
+  async updateSiteSettings(data) {
+    return await this.post('settings', data);
+  }
+
+  async getSiteInfo() {
+    return await this.get('');
+  }
+
+  /**
+   * Comments API methods (additional)
+   */
+  async createComment(data) {
+    return await this.post('comments', data);
+  }
+
+  /**
+   * Tags API methods (additional)
+   */
+  async updateTag(id, data) {
+    return await this.post(`tags/${id}`, data);
+  }
+
+  async deleteTag(id, force = false) {
+    return await this.delete(`tags/${id}?force=${force}`);
+  }
+
+  /**
+   * Site search and application passwords
+   */
+  async searchSite(params = {}) {
+    const queryString = params.toString();
+    const endpoint = queryString ? `search?${queryString}` : 'search';
+    return await this.get(endpoint);
+  }
+
+  async getApplicationPasswords() {
+    return await this.get('users/me/application-passwords');
+  }
+
+  async createApplicationPassword(data) {
+    return await this.post('users/me/application-passwords', data);
+  }
+
+  async deleteApplicationPassword(uuid) {
+    return await this.delete(`users/me/application-passwords/${uuid}`);
   }
 }
